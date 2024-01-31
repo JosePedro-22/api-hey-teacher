@@ -15,6 +15,6 @@ Route::get('/users', function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     //started create a new question
-    Route::post('/questions', Question\StoreController::class)->name('questions.store');
+    Route::post('/question', Question\StoreController::class)->name('question.store');
     //end question
 });
