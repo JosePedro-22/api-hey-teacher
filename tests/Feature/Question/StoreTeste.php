@@ -15,13 +15,13 @@ it('should be able to store a new question', function () {
 
     //fazendo um post de uma new question
     postJson(route('question.store', [
-        'question' => 'Teste Teste Teste ?'
+        'question' => 'Lorem ipsum, jose pedro ?'
     ]))->assertSuccessful();
 
     //buscando no banco de dados na tabela question a questao
     assertDatabaseHas('question', [
         'user_id' => $user->id,
-        'question' => 'Teste Teste Teste ?'
+        'question' => 'Lorem ipsum, jose pedro ?'
     ]);
 });
 
@@ -34,14 +34,14 @@ it('after create a new question, create a status that draft', function () {
 
     //fazendo um post de uma new question
     postJson(route('question.store', [
-        'question' => 'Teste Teste Teste ?'
+        'question' => 'Lorem ipsum, jose pedro ?'
     ]))->assertSuccessful();
 
     //buscando no banco de dados na tabela question a questao
     assertDatabaseHas('question', [
         'user_id' => $user->id,
         'status' => 'draft',
-        'question' => 'Teste Teste Teste ?'
+        'question' => 'Lorem ipsum, jose pedro ?'
     ]);
 });
 
@@ -59,6 +59,23 @@ describe('validation rules', function () {
             ->assertJsonValidationErrors([
                 'question' => 'required'
             ]);
+    });
+
+
+    test('question::ending with question mark', function () {
+
+        $user = User::factory()->create();
+
+
+        Sanctum::actingAs($user);
+
+        postJson(route('question.store', [
+            'question' => 'question without a question mark'
+        ]))
+            ->assertJsonValidationErrors([
+                'question' => 'The question should end with question mark (?).'
+            ]);
+
     });
 
 });
