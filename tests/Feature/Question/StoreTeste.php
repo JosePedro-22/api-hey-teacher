@@ -70,7 +70,7 @@ describe('validation rules', function () {
         Sanctum::actingAs($user);
 
         postJson(route('question.store', [
-            'question' => 'question without a question mark'
+            'question' => 'Question without a question mark'
         ]))
             ->assertJsonValidationErrors([
                 'question' => 'The question should end with question mark (?).'
@@ -78,4 +78,20 @@ describe('validation rules', function () {
 
     });
 
+
+    test('question::min caracteres should be 10', function () {
+
+        $user = User::factory()->create();
+
+
+        Sanctum::actingAs($user);
+
+        postJson(route('question.store', [
+            'question' => 'Question ?'
+        ]))
+            ->assertJsonValidationErrors([
+                'question' => 'least 10 caracteres'
+            ]);
+
+    });
 });
