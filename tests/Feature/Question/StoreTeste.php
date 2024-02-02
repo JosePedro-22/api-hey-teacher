@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Database\Factories\questionFactory;
 use Laravel\Sanctum\Sanctum;
 
 use function Pest\Laravel\assertDatabaseHas;
@@ -91,6 +92,30 @@ describe('validation rules', function () {
         ]))
             ->assertJsonValidationErrors([
                 'question' => 'least 10 caracteres'
+            ]);
+
+    });
+
+    test('question::should be unique', function () {
+
+        $user = User::factory()->create();
+
+        questionFactory::factory()
+                    ->create(
+                        [
+                            'question' => 'Lorem ipsum, jose pedro ?',
+                            'status' => 'draft',
+                            'user_id' => $user->id
+                        ]
+                    );
+
+        Sanctum::actingAs($user);
+
+        postJson(route('question.store', [
+            'question' => 'Lorem ipsum, jose pedro ?'
+        ]))
+            ->assertJsonValidationErrors([
+                'question' => 'alredy question in used'
             ]);
 
     });
