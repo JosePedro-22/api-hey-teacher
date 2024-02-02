@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Question;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Question\FormQuestions;
 use App\Models\Question;
-use function Pest\Laravel\json;
 
 class StoreController extends Controller
 {

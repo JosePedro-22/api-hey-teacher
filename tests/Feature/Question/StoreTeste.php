@@ -44,3 +44,21 @@ it('after create a new question, create a status that draft', function () {
         'question' => 'Teste Teste Teste ?'
     ]);
 });
+
+describe('validation rules', function () {
+
+    test('question::required', function () {
+        //criando um user
+        $user = User::factory()->create();
+
+        //logando o user
+        Sanctum::actingAs($user);
+
+        //fazendo um post de uma new question
+        postJson(route('question.store', []))
+            ->assertJsonValidationErrors([
+                'question' => 'required'
+            ]);
+    });
+
+});
