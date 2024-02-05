@@ -23,7 +23,7 @@ class FormQuestions extends FormRequest
     public function rules(): array
     {
         return [
-            'question' => ['required', new WithQuestionMark, 'min:10', 'unique:question'],
+            'question' => ['required', new WithQuestionMark, 'min:10'],
         ];
     }
 }

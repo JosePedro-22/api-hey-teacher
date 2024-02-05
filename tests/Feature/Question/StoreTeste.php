@@ -78,18 +78,17 @@ describe('validation rules', function () {
 
     });
 
-    test('question::min caracteres should be 10', function () {
+    test('question::min characters should be 10', function () {
 
         $user = User::factory()->create();
-
 
         Sanctum::actingAs($user);
 
         postJson(route('question.store', [
-            'question' => 'Question ?'
+            'question' => 'Question?'
         ]))
             ->assertJsonValidationErrors([
-                'question' => ''
+                'question' => 'The question field must be at least 10 characters.',
             ]);
 
     });
