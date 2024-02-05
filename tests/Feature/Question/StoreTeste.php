@@ -1,7 +1,7 @@
 <?php
 
+use App\Models\Question;
 use App\Models\User;
-use Database\Factories\questionFactory;
 use Laravel\Sanctum\Sanctum;
 
 use function Pest\Laravel\assertDatabaseHas;
@@ -97,14 +97,13 @@ describe('validation rules', function () {
 
         $user = User::factory()->create();
 
-        questionFactory::factory()
-                    ->create(
-                        [
-                            'question' => 'Lorem ipsum, jose pedro ?',
-                            'status' => 'draft',
-                            'user_id' => $user->id
-                        ]
-                    );
+        Question::factory()->create(
+                [
+                    'question' => 'Lorem ipsum, jose pedro ?',
+                    'status' => 'draft',
+                    'user_id' => $user->id
+                ]
+            );
 
         Sanctum::actingAs($user);
 
@@ -112,7 +111,7 @@ describe('validation rules', function () {
             'question' => 'Lorem ipsum, jose pedro ?'
         ]))
             ->assertJsonValidationErrors([
-                'question' => 'alredy question in used'
+                'question' => 'The question has already been taken.'
             ]);
 
     });
