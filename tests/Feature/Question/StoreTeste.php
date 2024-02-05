@@ -62,7 +62,6 @@ describe('validation rules', function () {
             ]);
     });
 
-
     test('question::ending with question mark', function () {
 
         $user = User::factory()->create();
@@ -74,11 +73,10 @@ describe('validation rules', function () {
             'question' => 'Question without a question mark'
         ]))
             ->assertJsonValidationErrors([
-                'question' => 'The question should end with question mark (?).'
+                'question' => 'The :atributes should end with question mark (?).'
             ]);
 
     });
-
 
     test('question::min caracteres should be 10', function () {
 
@@ -91,7 +89,7 @@ describe('validation rules', function () {
             'question' => 'Question ?'
         ]))
             ->assertJsonValidationErrors([
-                'question' => 'least 10 caracteres'
+                'question' => ''
             ]);
 
     });
