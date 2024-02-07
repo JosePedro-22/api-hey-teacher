@@ -127,7 +127,7 @@ test('after creating we return a status 201 with the created question', function
     //fazendo um post de uma new question
     $request = postJson(route('question.store', [
         'question' => 'Lorem ipsum, jose pedro ?'
-    ]));
+    ]))->assertCreated();
 
     $question = Question::latest()->first();
 
@@ -136,8 +136,12 @@ test('after creating we return a status 201 with the created question', function
             'id' => $question->id,
             'question' => $question->question,
             'status' => $question->status,
-            'created_at' => $question->created_at->format('Y-m-d'),
-            'updated_at' => $question->updated_at->format('Y-m-d'),
+            'created_by' => [
+                'user_id' => $user->id,
+                'name' => $user->name,
+            ],
+            'created_at' => $question->created_at->format('Y-m-d H:i:s'),
+            'updated_at' => $question->updated_at->format('Y-m-d H:i:s'),
         ]
     ]);
 });
