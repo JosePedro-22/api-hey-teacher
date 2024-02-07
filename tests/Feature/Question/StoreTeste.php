@@ -26,7 +26,7 @@ it('should be able to store a new question', function () {
     ]);
 });
 
-it('after create a new question, create a status that draft', function () {
+it('with the creation of the question, we need to make sure that it creates with status _draft_', function () {
     //criando um user
     $user = User::factory()->create();
 
@@ -98,12 +98,12 @@ describe('validation rules', function () {
         $user = User::factory()->create();
 
         Question::factory()->create(
-                [
-                    'question' => 'Lorem ipsum, jose pedro ?',
-                    'status' => 'draft',
-                    'user_id' => $user->id
-                ]
-            );
+            [
+                'question' => 'Lorem ipsum, jose pedro ?',
+                'status' => 'draft',
+                'user_id' => $user->id
+            ]
+        );
 
         Sanctum::actingAs($user);
 
@@ -115,4 +115,29 @@ describe('validation rules', function () {
             ]);
 
     });
+});
+
+test('after creating we return a status 201 with the created question', function () {
+    //criando um user
+    $user = User::factory()->create();
+
+    //logando o user
+    Sanctum::actingAs($user);
+
+    //fazendo um post de uma new question
+    $request = postJson(route('question.store', [
+        'question' => 'Lorem ipsum, jose pedro ?'
+    ]));
+
+    $question = Question::latest()->first();
+
+    $request->assertJson([
+        'data' => [
+            'id' => $question->id,
+            'question' => $question->question,
+            'status' => $question->status,
+            'created_at' => $question->created_at->format('Y-m-d'),
+            'updated_at' => $question->updated_at->format('Y-m-d'),
+        ]
+    ]);
 });
