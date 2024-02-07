@@ -14,7 +14,12 @@ Route::get('/users', function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+
     //started create a new question
     Route::post('/question', Question\StoreController::class)->name('question.store');
     //end question
+
+    //started updating a question
+    Route::put('/question/{question}', Question\UpdateController::class)->name('question.update');
+    //end updating a question
 });
